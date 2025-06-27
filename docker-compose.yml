@@ -1,13 +1,50 @@
 version: '3'
 services:
   cassandra:
-    image: cassandra:latest
+    image: cassandra:4.1.9
     container_name: cassandra
     ports:
       - "9042:9042"
     volumes:
       - cassandra-data:/var/lib/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=Test Cluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_SEEDS=cassandra
+    networks:
+      - cassandra-net
 
+  cassandra2:
+    image: cassandra:4.1.9
+    container_name: cassandra2
+    depends_on:
+      - cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=Test Cluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_SEEDS=cassandra
+    volumes:
+      - cassandra3-data:/var/lib/cassandra
+    networks:
+      - cassandra-net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      - cassandra
+      - cassandra2
+    networks:
+      - cassandra-net
+    command: ["python", "cassandra_script_runner.py"]
+
+  
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -19,8 +56,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    
+
 volumes:
   cassandra-data:
+  cassandra3-data:
   postgres-data:
+networks:
+  cassandra-net:
+
 

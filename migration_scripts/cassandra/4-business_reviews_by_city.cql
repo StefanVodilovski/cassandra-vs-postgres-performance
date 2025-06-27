@@ -1,6 +1,5 @@
-CREATE TABLE business_reviews_by_city(
-    business_id  TEXT,
-    review_id TEXT,
+CREATE TABLE business_reviews_per_city(
+    review_count INT,
     city TEXT,
-    PRIMARY KEY ((business_id, review_id), city)
+    PRIMARY KEY ((city, review_count))
 );

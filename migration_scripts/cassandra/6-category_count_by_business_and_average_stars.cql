@@ -1,9 +1,9 @@
 
-CREATE TABLE number_of_categories_and_average_stars_by_business(
-	business_id TEXT,
-    number_of_categories INT,
+CREATE TABLE business_count_per_category_and_average_star_review(
+	category TEXT,
+    business_count INT,
     average_stars FLOAT,
-    PRIMARY KEY (number_of_categories)
+    PRIMARY KEY (category)
 );
 
 

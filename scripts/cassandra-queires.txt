@@ -1,0 +1,59 @@
+-- Find all 3 star reviews for businesses in New Orleans -- 
+
+SELECT review_id,business_id, stars, city 
+from three_star_reviews
+where stars = 3 and city = 'New Orleans'
+ALLOW FILTERING;
+
+-- Find all businesses with 5 star reviews posted in the last year. (the dataset is older so the latest year is 2021)--
+
+SELECT business_id, review_id, stars, date from reviews_by_year
+where stars = 5 and date >= '2022-01-01' AND date < '2023-01-01'    
+ALLOW FILTERING;
+
+-- Find all users that are Yelp users since 2007 and have posted above 500 reviews. -- 
+
+SELECT user_id, yelping_since,review_count from users_with_reviews_yelping_since
+where yelping_since >= '2017-01-01' AND review_count > 500
+ALLOW FILTERING;
+
+
+-- Cities ordered by number of business reviews. --
+
+SELECT review_count, city from business_reviews_per_city;
+
+
+-- For each business display the average word count on its reviews -- 
+
+SELECT business_id,average_word_count_on_review from average_words_on_review_for_a_business;
+
+
+	
+-- Display how many business belong to each category and display businesses average stars --
+
+
+SELECT category, business_count, average_stars from business_count_per_category_and_average_star_review;
+
+
+
+-- How many reviews are with 1, 2, 3, 4, 5 stars --
+
+SELECT stars,number_of_reviews from reviews_by_star;
+
+-- For each city find top 3 categories by weighted average rating  --
+
+SELECT city,category, average_rating from top_categoreies_by_city;
+
+
+
+-- For each user display the number of reviewed business, the number of unique categories and average useful votes by review --
+	
+SELECT user_id,review_count, number_of_reviewed_categories, number_of_useful_reviews from user_statistics;
+
+
+-- Total number of reviews per category and average stars per category for each month in 2021 --
+	
+SELECT category, year_month, avg_stars,total_reviews from review_statistics
+where year_month >= '2021-01' AND year_month < '2022-01'
+ALLOW FILTERING;
+
